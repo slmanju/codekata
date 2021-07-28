@@ -1,25 +1,24 @@
 package com.slmanju.globalcounter;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
+import static org.springframework.data.mongodb.core.FindAndModifyOptions.options;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
-@Service
-public class CounterService {
+@Component @AllArgsConstructor
+public class SequenceGenerator {
 
-  @Autowired
-  private MongoTemplate mongoTemplate;
+  private final MongoTemplate mongoTemplate;
 
   public long findNext() {
     Query query = query(where("_id").is("url_shortner"));
     Update update = new Update().inc("sequence", 1);
-    Counter counter = mongoTemplate.findAndModify(query, update, Counter.class);
-    assert counter != null;
+    Counter counter = mongoTemplate.findAndModify(query, update, options().returnNew(true), Counter.class);
     return counter.getSequence();
   }
 

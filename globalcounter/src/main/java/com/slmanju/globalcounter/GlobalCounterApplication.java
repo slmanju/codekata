@@ -17,39 +17,47 @@ public class GlobalCounterApplication implements CommandLineRunner {
 	}
 
 	@Autowired
-	private CounterService counterService;
+	private SequenceGenerator sequenceGenerator;
 
 	@Override
 	public void run(String... args) throws Exception {
 		System.out.println("+++++++++ START ++++");
 
-		TimeLogger.log(() -> counterService.findNext());
-		TimeLogger.log(() -> counterService.findNext());
-		TimeLogger.log(() -> counterService.findNext());
-		TimeLogger.log(() -> counterService.findNext());
-		TimeLogger.log(() -> counterService.findNext());
+		TimeLogger.log(() -> sequenceGenerator.findNext());
+		TimeLogger.log(() -> sequenceGenerator.findNext());
+		TimeLogger.log(() -> sequenceGenerator.findNext());
+//		TimeLogger.log(() -> counterService.findNext());
+//		TimeLogger.log(() -> counterService.findNext());
 
-		ExecutorService executorService = Executors.newFixedThreadPool(1000);
+//		ExecutorService executorService = Executors.newFixedThreadPool(1000);
 //		ExecutorService executorService = Executors.newCachedThreadPool();
 
-		List<Callable<Object>> callables = new ArrayList<>();
+//		List<Callable<Object>> callables = new ArrayList<>();
+//
+//		for (int i = 0; i < 15000; i++) {
+//			int finalI = i;
+//			callables.add(() -> {
+//				long start = System.currentTimeMillis();
+//				long count = sequenceGenerator.findNext();
+//				//System.out.println("Time taken for " + finalI + " is " + (System.currentTimeMillis() - start));
+//				return count;
+//			});
+//		}
+//
+//		TimeLogger.log(() -> {
+//			executorService.invokeAll(callables);
+//			return -1;
+//		});
+//		TimeLogger.log(() -> {
+//			executorService.invokeAll(callables);
+//			return -1;
+//		});
+//		TimeLogger.log(() -> {
+//			executorService.invokeAll(callables);
+//			return -1;
+//		});
 
-		for (int i = 0; i < 10000; i++) {
-			int finalI = i;
-			callables.add(() -> {
-				long start = System.currentTimeMillis();
-				long count = counterService.findNext();
-				//System.out.println("Time taken for " + finalI + " is " + (System.currentTimeMillis() - start));
-				return count;
-			});
-		}
-
-		TimeLogger.log(() -> executorService.invokeAll(callables));
-		TimeLogger.log(() -> executorService.invokeAll(callables));
-		TimeLogger.log(() -> executorService.invokeAll(callables));
-		TimeLogger.log(() -> executorService.invokeAll(callables));
-
-		executorService.shutdown();
+//		executorService.shutdown();
 
 		System.out.println("++++++++ DONE +++++++");
 	}

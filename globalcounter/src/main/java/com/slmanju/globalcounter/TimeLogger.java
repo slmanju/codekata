@@ -4,14 +4,14 @@ public class TimeLogger {
 
   public static void log(Loggable loggable) throws Exception {
     long start = System.currentTimeMillis();
-    loggable.log();
+    long value = loggable.log();
     long end = System.currentTimeMillis();
-    System.out.println("--- TIME: " + (end - start));
+    System.out.println(value + " --- TIME: " + (end - start));
   }
 
   @FunctionalInterface
   interface Loggable {
-    void log() throws Exception;
+    long log() throws Exception;
   }
 
 }
